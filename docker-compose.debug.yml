@@ -1,16 +1,15 @@
-# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP .NET Core service.
-
 version: '3.4'
 
 services:
-  dockerwebapilearning:
-    image: dockerwebapilearning
-    build:
-      context: .
-      dockerfile: ./Dockerfile
+  dockerlearningwebapiservice:
+    build: .
     ports:
-      - 5000
+      - "8080:80"
+      - "8081:443"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=Dilip
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/Docker.WebAPI.Learning.pfx
     volumes:
-      - ~/.vsdbg:/remote_debugger:rw
+      - ~/.aspnet/https:/https:ro
