@@ -24,6 +24,7 @@ namespace Docker.WebAPI.Learning.Controllers
         }
 
         [HttpGet]
+        
         public IEnumerable<WeatherForecast> Get()
         {
             var rng = new Random();
@@ -35,5 +36,38 @@ namespace Docker.WebAPI.Learning.Controllers
             })
             .ToArray();
         }
+        [HttpGet("{id}")]
+        
+        public IEnumerable<WeatherForecast> Get(int id)
+        {
+           
+            var rng = new Random();
+            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            {
+                Date = DateTime.Now.AddDays(index),
+                TemperatureC = rng.Next(-20, 55),
+                Summary = id.ToString()
+            })
+            .ToArray();
+        }
+
+        [HttpGet("secon/j")]
+        public IEnumerable<WeatherForecast> SecondGet([FromQuery]log log)
+        {
+            var rng = new Random();
+            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            {
+                Date = DateTime.Now.AddDays(index),
+                TemperatureC = rng.Next(-20, 55),
+                Summary = Summaries[rng.Next(Summaries.Length)]
+            })
+            .ToArray();
+        }
+    }
+
+    public class log
+    {
+        public string username { get; set; }
+        public int LogId { get; set; }
     }
 }
