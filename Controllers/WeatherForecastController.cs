@@ -17,10 +17,13 @@ namespace Docker.WebAPI.Learning.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IAppsettings _appsettings;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger , IAppsettings appsettings)
         {
             _logger = logger;
+            _appsettings = appsettings;
+
         }
 
         [HttpGet]
@@ -51,15 +54,16 @@ namespace Docker.WebAPI.Learning.Controllers
             .ToArray();
         }
 
-        [HttpGet("secon/j")]
-        public IEnumerable<WeatherForecast> SecondGet([FromQuery]log log)
+        [HttpGet("Second")]
+        public IEnumerable<WeatherForecast> SecondGet()
         {
+            var a = _appsettings.DevelopmentEnviroonment;
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
+                Summary = a
             })
             .ToArray();
         }

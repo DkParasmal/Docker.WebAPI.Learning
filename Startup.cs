@@ -9,9 +9,19 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Docker.WebAPI.Learning
 {
+    public interface IAppsettings
+   
+    {
+        public string DevelopmentEnviroonment { get; set; }
+    }
+    public class Appsettings : IAppsettings
+    {
+        public string DevelopmentEnviroonment { get; set; }
+    }
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -24,7 +34,12 @@ namespace Docker.WebAPI.Learning
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddControllers();
+            services.Configure<Appsettings>(
+                 Configuration.GetSection(nameof(Appsettings)));
+            services.AddSingleton<IAppsettings>(sp =>
+              sp.GetRequiredService<IOptions<Appsettings>>().Value);
             services.AddSwaggerGen();
         }
 
