@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -54,23 +56,18 @@ namespace Docker.WebAPI.Learning.Controllers
             .ToArray();
         }
 
-        [HttpGet("Second")]
-        public IEnumerable<WeatherForecast> SecondGet()
+        [HttpGet("GetAppSetting")]
+        public IAppsettings GetEnv([FromQuery]Log log)
         {
-            var a = _appsettings.DevelopmentEnviroonment;
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = a
-            })
-            .ToArray();
+            var a = " dilip kumar2 ";
+          
+            return _appsettings;
         }
     }
 
-    public class log
+    public class Log
     {
+       [RegularExpression("/^[a-zA-Z]*$/")]
         public string username { get; set; }
         public int LogId { get; set; }
     }
